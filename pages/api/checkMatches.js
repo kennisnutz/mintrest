@@ -1,6 +1,6 @@
-import { client } from '../../lib/sanity'
+import { client } from '../../lib/sanity';
 
-const getUserInfo = async (req, res) => {
+const checkMatches = async (req, res) => {
   try {
     const query = `
       *[_type == "users" && _id == "${req.body.likedUser}"]{
@@ -9,11 +9,12 @@ const getUserInfo = async (req, res) => {
     `
 
     const sanityResponse = await client.fetch(query)
-
+    
     let isMatch = false
 
-    sanityResponse[0].likes.forEach(likedUser => {
-      if (likedUser._ref === req.body.currentUser) {
+  sanityResponse[0].likes.forEach(({userLiked} )=> {
+      
+      if (userLiked._ref === req.body.currentUser) {
         isMatch = true
       }
     })
@@ -24,4 +25,4 @@ const getUserInfo = async (req, res) => {
   }
 }
 
-export default getUserInfo
+export default checkMatches

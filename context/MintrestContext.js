@@ -20,6 +20,7 @@ export const MintrestProvider= ({children})=> {
     }, [currentAccount])
     useEffect(()=>{
       if (!currentAccount) return
+     
       requestCurrentUserData(currentAccount)
       requestUsersData(currentAccount)
     },[currentAccount])
@@ -72,7 +73,57 @@ export const MintrestProvider= ({children})=> {
           //setAppStatus('notConnected')
           //setCurrentAccount('')
       }
+      const handleRightSwipe= async(cardsData, currentUserAddress)=>{
+        
+        const likeData= {
+          likedUser: cardsData.walletAddress,
+          currentUser: currentUserAddress,
+        }
+        try {
+          await fetch(`/api/saveLike`,{
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify(likeData),
+          })
 
+          const response= await fetch(`/api/checkMatches`, {
+            method: 'POST',
+            headers: {
+              'content-type':'application/json'
+            },
+            body: JSON.stringify(likeData),
+          })
+          const responseData= await response.json()
+          
+          const matchStatus= responseData.data.isMatch
+          
+
+          if(matchStatus){
+            console.log('Match!!')
+
+            const mintData={
+              walletAddress: [cardsData.walletAddress, currentUserAddress],
+              names: [cardsData.name, currentUser.name],
+            }
+            // await fetch('/api/mintMatchNFT', {
+            //   method: 'POST',
+            //   headers: {
+            //     'content-type': 'application/json',
+            //   },
+            //   body: JSON.stringify(mintData)
+            // })
+          }
+
+
+          
+
+        } catch (error) {
+          console.log(error)
+        }
+        
+      }
       const requestToCreateUserProfile= async (walletAddress, name)=>{
         try {
           await fetch('api/createUser', {
@@ -105,7 +156,7 @@ export const MintrestProvider= ({children})=> {
       try {
         const response= await fetch(`api/fetchUsers?activeAccount=${activeAccount}`)
         const data= await response.json()
-        console.log(data.data)
+        
         setCardsData(data.data)
         } catch (error) {
         console.log(error)
@@ -124,7 +175,8 @@ export const MintrestProvider= ({children})=> {
                  setCurrentUser,
                  connectToWallet,
                  cardsData,
-                 setCardsData
+                 setCardsData,
+                 handleRightSwipe
 
              }}
         >

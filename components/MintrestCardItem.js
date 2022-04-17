@@ -30,12 +30,12 @@ const style = {
  
 
 const MintrestCardItem = ({card}) => {
-    const {  currentAccount } = useContext(mintrestContext)
+    const {  currentAccount, handleRightSwipe } = useContext(mintrestContext)
 
-    const stacks =["react", 'solidity', 'python', 'graphic design']
+   
     const onSwipe= (dir)=>{
         if(dir=== 'right'){
-           // handleRightSwipe(card, currentAccount)
+         handleRightSwipe(card, currentAccount)
         }
     }
   return (
@@ -50,7 +50,7 @@ const MintrestCardItem = ({card}) => {
                
                <div className={style.space}>    
                 <div className={style.tagContainer}>
-                {card.stack.map((tag, index)=> <div className={style.tags} >
+                {card.stack.map((tag, index)=> <div className={style.tags} key={index} >
                     
                     {tag}
                     </div>)}
