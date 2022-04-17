@@ -1,7 +1,11 @@
 import React from 'react'
+import { useContext } from 'react'
 import CardHeader from './CardHeader'
 import icon from '../assets/icon.png'
 import Image from 'next/image'
+import CardFooter from './CardFooter'
+import MintrestCardItem from './MintrestCardItem'
+import { mintrestContext } from '../context/MintrestContext'
 
 const style = {
     wrapper: `h-[45rem] w-[27rem] flex flex-col rounded-lg overflow-hidden`,
@@ -14,6 +18,7 @@ const style = {
   
 
 const Card = () => {
+    const {cardsData} = useContext(mintrestContext)
   return (
     <div className={style.wrapper}>
         <CardHeader/>
@@ -25,12 +30,13 @@ const Card = () => {
                 </div>
             </div>
             <div className={style.swipesContainer}>
-                {/* {cardsData.map((card, index)=>(
-                    <TinderCardItem key={index} card={card}/>
-                ))} */}
+                
+                {cardsData.map((card, index)=>(
+                    <MintrestCardItem key={index} card={card}/>
+                ))}
             </div>
         </div>
-        {/* card footer */}
+        <CardFooter/>
     </div>
   )
 }

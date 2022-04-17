@@ -2,6 +2,10 @@ import React from 'react'
 import Image from 'next/image'
 import logo from '../assets/logo.png'
 import avatar from '../assets/avatar.jpeg'
+import { mintrestContext } from '../context/MintrestContext'
+import { useContext } from 'react'
+import SignIn from './SignIn'
+
 
 const style = {
     wrapper: `h-24 py-11 text-white flex w-screen items-center px-16 justify-between`,
@@ -16,7 +20,9 @@ const style = {
   }
 
 const Header = () => {
-    const currentAccount= '0xa361215bA81c4E65EFEc555673f0792eDE579A0f'
+    
+    
+
   return (
     <div className={style.wrapper}>
         <div className={style.main}>
@@ -31,25 +37,7 @@ const Header = () => {
             </div>
             <div className={style.rightMenu}>
                 <div>English</div>
-                {
-                    currentAccount ? (
-                        <>
-                            <div className={style.currentAccount}>
-                                <Image src={avatar} alt= "userImage" height={20} width={20}/>
-                                <span className={style.accountAddress}>
-                                    {currentAccount.slice(0,4)}...{currentAccount.slice(-3)}}
-                                </span>
-                            </div>
-                            <button className={style.authButton} onClick= {()=> console.log('disconect')}>
-                                Disconnect
-                            </button>                            
-                        </>
-                    ): (
-                        <button className={style.authButton} onClick={()=> console.log('connect')}>
-                            Connect Wallet
-                        </button>
-                    )
-                }
+                <SignIn/>
                 
             </div>
         </div>
